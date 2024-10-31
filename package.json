@@ -24,7 +24,7 @@
         "fsePartsSnippetor.targetSelector": {
           "type": "string",
           "description": "取得するパーツのセレクターをjQuery形式で指定します。（例: '.breadcrumb, .btn01' や '#main > .container'）",
-          "default": ".breadcrumb, .btn01"
+          "default": ".btn01"
         },
         "fsePartsSnippetor.targetFilePath": {
           "type": "string",
