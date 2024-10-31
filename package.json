@@ -49,6 +49,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.35",
     "@types/mocha": "^10.0.9",
     "@types/node": "20.x",
     "@types/vscode": "^1.94.0",

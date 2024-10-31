@@ -30,26 +30,49 @@ export function activate(context: vscode.ExtensionContext) {
       const fileContentString = Buffer.from(fileContent).toString("utf-8");
 
       // ファイルの内容をcheerioで解析
-      const $ = cheerio.load(fileContentString, { xml: { xmlMode: true, decodeEntities: false } });
+      const $ = cheerio.load(fileContentString, { xmlMode: true, decodeEntities: false });
 
-      const elements = $(targetSelector);
-      elements.each((i, element) => {
-        let elementHtml = $.html(element)?.trim();
-        if (elementHtml) {
-          elementHtml = elementHtml.replace(/(\$)(?=[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)/g, "\\$");
+      $(targetSelector).each((i: number, element: cheerio.Element) => {
+        const elementHtml = $.html(element)?.trim();
+        if (!elementHtml) return;
+        // PHP構文の$マークをエスケープ
+        // const escapedElementHtml = elementHtml.replace(/(\$)(?=[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)/g, "\\$");
 
-          const lines = elementHtml.split("\n");
-          const indentedLines = lines.map((line, index) => {
-            if (index === 0) return line; // 最初の行はインデントなし
-            return "\t" + line.trim(); // VSCodeスニペット用のインデント
+        // 要素の階層構造に基づいてインデントを計算
+        const lines: string[] = [];
+        const processNode = (node: cheerio.Element, level: number) => {
+          const $node = $(node);
+
+          // 開始タグを追加
+          const startTag = $.html(node).split("\n")[0].trim();
+          lines.push("\t".repeat(level) + startTag);
+
+          // 子要素を処理
+          $node.contents().each((_, child) => {
+            if (child.type === "text") {
+              const text = $(child).text().trim();
+              if (text) {
+                lines.push("\t".repeat(level + 1) + text);
+              }
+            } else if (child.type === "tag") {
+              processNode(child, level + 1);
+            }
           });
 
-          const snippetName = `${$(element).attr("class")}-${("0" + (i + 1)).slice(-2)}`;
-          snippets[snippetName] = {
-            prefix: snippetName,
-            body: indentedLines,
-          };
-        }
+          // 閉じタグを追加（自己終了タグでない場合）
+          if (!startTag.endsWith("/>")) {
+            lines.push("\t".repeat(level) + `</${node.type === "tag" ? node.tagName : "test"}>`);
+          }
+        };
+
+        processNode(element, 0);
+
+        console.log(lines);
+        // const snippetName = `${$(element).attr("class")}-${("0" + (i + 1)).slice(-2)}`;
+        // snippets[snippetName] = {
+        //   prefix: snippetName,
+        //   body: indentedLines,
+        // };
       });
 
       // スニペットファイルを保存
