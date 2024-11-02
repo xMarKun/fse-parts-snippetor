@@ -1,9 +1,4 @@
-# Change Log
+# 変更履歴
 
-All notable changes to the "fse-parts-snippetor" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- 初期リリース（1.0.0）
+  - 特定のファイル内にあるクラスの子要素をスニペットに登録します。

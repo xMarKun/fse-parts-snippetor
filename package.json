@@ -1,34 +1,36 @@
 {
   "name": "fse-parts-snippetor",
   "displayName": "FSE Parts Snippetor",
-  "description": "",
-  "version": "0.0.1",
+  "description": "特定のファイル内にある指定したクラスの子要素をスニペットに登録します。",
+  "publisher": "xMarKun",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.94.0"
   },
   "categories": [
-    "Other"
+    "Snippets"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:**/*.php"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "fsePartsSnippetor.registerPartsAsSnippet",
-        "title": "FSE Parts Snippetor: パーツをスニペットに登録"
-      }
-    ],
     "configuration": {
       "title": "FSE Parts Snippetor",
       "properties": {
-        "fsePartsSnippetor.targetSelector": {
-          "type": "string",
-          "description": "取得するパーツのセレクターをjQuery形式で指定します。（例: '.breadcrumb, .btn01' や '#main > .container'）",
-          "default": ".btn01"
+        "fsePartsSnippetor.targetClasses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "ここに指定したクラスの子要素をスニペットに登録します。",
+          "default": [
+            "fse-parts-snippetor"
+          ]
         },
         "fsePartsSnippetor.targetFilePath": {
           "type": "string",
-          "description": "パーツを取得するファイルのパスを指定します。",
+          "description": "スニペットの登録を行うファイルのパスです。指定したファイルの保存時に自動的にスニペットが登録されます。（PHPファイルのみ）",
           "default": "demo/index.php"
         }
       }
