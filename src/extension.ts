@@ -53,7 +53,7 @@ const saveDocumentListener = async (document: vscode.TextDocument) => {
       .trim();
 
     // クラス名を取得
-    const classNames = $($element.children()[0]).attr("class")?.split(" ") || [];
+    const classNames = $element.children().eq(0).attr("class")?.split(" ") || [];
     const baseClass = classNames[0] || "unknown-name";
     const modifier = classNames.find((cls) => cls.startsWith(`${baseClass}--`));
 
@@ -74,7 +74,7 @@ const saveDocumentListener = async (document: vscode.TextDocument) => {
   // スニペットファイルを保存
   await vscode.workspace.fs.writeFile(snippetFilePath, Buffer.from(JSON.stringify(snippets, null, 2), "utf-8"));
 
-  vscode.window.showInformationMessage("パーツをスニペットを登録しました。");
+  vscode.window.showInformationMessage("パーツをスニペットファイルに登録しました。");
 };
 
 // 拡張機能がアクティブになった時に実行される関数
