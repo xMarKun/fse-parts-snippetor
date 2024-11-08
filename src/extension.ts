@@ -55,14 +55,17 @@ const saveDocumentListener = async (document: vscode.TextDocument) => {
     // クラス名を取得
     const classNames = $element.children().eq(0).attr("class")?.split(" ") || [];
     const baseClass = classNames[0] || "unknown-name";
-    const modifier = classNames.find((cls) => cls.startsWith(`${baseClass}--`));
+
+    // すべてのモディファイアを取得
+    const modifiers = classNames.filter((cls) => cls.startsWith(`${baseClass}--`)).map((cls) => cls.split("--")[1]);
 
     // ベースクラスでカウンターを更新
     snippetCounter[baseClass] = (snippetCounter[baseClass] || 0) + 1;
-
-    // スニペット名を生成（ベースクラスのカウンターを使用）
     const counter = ("0" + snippetCounter[baseClass]).slice(-2);
-    const snippetName = "fse:" + (modifier ? `${baseClass}-${counter}--${modifier.split("--")[1]}` : `${baseClass}-${counter}`);
+
+    // モディファイアの組み合わせを含むスニペット名を生成
+    const modifierPart = modifiers.length > 0 ? `--${modifiers.join("--")}` : "";
+    const snippetName = `fse:${baseClass}-${counter}${modifierPart}`;
 
     // スニペットを登録
     snippets[snippetName] = {
