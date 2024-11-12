@@ -65,7 +65,7 @@ const saveDocumentListener = async (document: vscode.TextDocument) => {
 
     // モディファイアの組み合わせを含むスニペット名を生成
     const modifierPart = modifiers.length > 0 ? `--${modifiers.join("--")}` : "";
-    const snippetName = `fse:${baseClass}-${counter}${modifierPart}`;
+    const snippetName = `@fse:${baseClass}-${counter}${modifierPart}`;
 
     // スニペットを登録
     snippets[snippetName] = {

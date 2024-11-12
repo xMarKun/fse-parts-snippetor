@@ -3,7 +3,7 @@
   "displayName": "FSE Parts Snippetor",
   "description": "特定のファイル内にある指定したクラスの子要素をスニペットに登録します。",
   "publisher": "xMarKun",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "engines": {
     "vscode": "^1.94.0"
   },
